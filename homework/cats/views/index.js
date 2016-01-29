@@ -80,7 +80,7 @@ router.get('/', function (req, res, next){
 				text: 'See Your Cats',
 			 	link:'/cats'
 			}, {
-				text: 'Sort Cats by a Random Color',
+				text: 'Get all Cats with Random Color',
 				link: (function () {
 					randomColorInt = Math.floor(Math.random() * (catOptions.colors.length));
 					randomColor = catOptions.colors[randomColorInt];
