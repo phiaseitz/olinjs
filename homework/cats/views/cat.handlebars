@@ -1,0 +1,17 @@
+<h1>{{message}}</h1>
+<a href='/'>Back</a>
+{{#each cats}}
+<h2>{{this.name}}</h2>
+<h3><ul>
+	<li> Age: {{this.age}}</li>
+	<li> Color(s): 
+		<ul>
+		{{#each this.colors}}
+			<li>{{this}}</li>
+		{{/each}}
+		</ul>
+	</li>
+</ul></h3>
+{{/each}}
+
+ 
