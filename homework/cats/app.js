@@ -4,7 +4,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs  = require('express-handlebars');
-var favicon = require('serve-favicon');
 
 
 
@@ -21,7 +20,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// app.get('/', index);
+app.get('/', index);
 app.get('/cats/new', index);
 app.get('/cats', index);
 app.get('/cats/bycolor/:color', index);
