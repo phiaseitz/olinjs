@@ -2,7 +2,8 @@ var db = require('../fakeDatabase');
 var express = require('express');
 var router = express.Router();
 var _ = require('underscore');
-var catOptions = require('../catNamesAndColors')
+var catOptions = require('../catNamesAndColors');
+var catModel = require('../models/catModel');
 
 //Function that constructs and returns a cat object
 function Cat() {
@@ -13,11 +14,11 @@ function Cat() {
 
 	var colors = getCatColors(1,5,possibleColors);;
 
-	var cat = {
+	var cat = catModel({
 		name: name,
 		age: age,
 		colors: colors,
-	};
+	});
 
 	return cat;
 }
@@ -28,47 +29,60 @@ function getCatColors(minColors, maxColors, allColors) {
 }
 
 router.get('/cats/new', function (req, res, next) {
-	console.log('new cat');
 	var newCat = Cat();
-	db.add(newCat);
+	newCat.save(function (err, newCat) {
+	  if (err) return console.error(err);
+	  console.log("saved " + newCat.name)
+	});
 	res.render('cat', {message: 'You got a new Cat!', cats: [newCat]});
 });
 
 router.get('/cats', function (req, res, next) {
-	var allCats = db.getAll();
-	console.log(allCats);
-	res.render('cat', {message: 'You have these cats:', cats: allCats});
+	catModel.find()
+		.sort('age')
+		.exec(function (err, allCats) {
+		  if (err) return console.error(err);
+		  res.render('cat', {message: 'You have these cats:', cats: allCats});
+		})
+	
 });
 
-router.param('color', function (req, res, next, color) {
-	var allCats = db.getAll();
-
-	catsWithColor = allCats.filter(function (cat){
-		return _.contains(cat.colors, color);
+router.get('/cats/bycolor/:color', function (req, res, next){
+	
+	catModel.find({colors: req.params.color}, function (err, colorCats) {
+	  if (err) return console.error(err);
+		res.render('cat', {message: 'You have these cats with color ' + req.params.color + ':', cats: colorCats});	
 	})
 
-	res.render('cat', {message: 'You have these cats with color ' + color + ':', cats: catsWithColor});
-
-	next();
-})
-
-router.get('/cats/bycolor/:color', function (req, res, next){
-	console.log('Color!');
 })
 
 
 router.get('/cats/delete/old', function (req, res, next){
-	allCats = db.getAll();
+	
+	catModel.findOneAndRemove({},{sort: {age: -1}}, function(err, deletedCat) {
+		if (err) return console.error(err);
+		console.log(deletedCat);
+		if (deletedCat){
+			res.render('cat', {message: 'You removed a cat', cats: [deletedCat]});
+		} else {
+			res.render('cat', {message: 'You do not have any cats to "send to a farm".', cats: []});
+		}
+	});
 
-	if (allCats.length === 0){
-		res.render('cat', {message: 'You do not have any cats to "send to a farm".', cats: []});
-	} else {
-		allCats.length
+})
 
-		removedCats = db.remove(allCats.length - 1)
-		res.render('cat', {message: 'You removed a cat', cats: removedCats});
-	}
-
+router.get('/cats/bycolors/:color1/:color2', function (req, res, next){
+	catModel.find(
+		{
+			colors: {$in: [req.params.color1, 
+			req.params.color2]}
+		})
+		.sort('age').exec(function (err, colorCats) {
+		  if (err) return console.error(err);
+			res.render('cat', {
+				message: 'You have these cats with color ' + req.params.color1 + ' or ' + req.params.color2 + ':', 
+				cats: colorCats});	
+	})
 })
 
 router.get('/', function (req, res, next){
@@ -80,7 +94,7 @@ router.get('/', function (req, res, next){
 				text: 'See Your Cats',
 			 	link:'/cats'
 			}, {
-				text: 'Sort Cats by a Random Color',
+				text: 'Get all Cats with Random Color',
 				link: (function () {
 					randomColorInt = Math.floor(Math.random() * (catOptions.colors.length));
 					randomColor = catOptions.colors[randomColorInt];
