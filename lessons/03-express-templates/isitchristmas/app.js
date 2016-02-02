@@ -23,5 +23,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(favicon(path.join(__dirname,'public','images','favicon.png')));
 
 app.get('/', index.home);
+app.get('/isItXmas', index.isItXmas);
 
 app.listen(3000);

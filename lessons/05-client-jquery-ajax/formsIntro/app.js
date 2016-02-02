@@ -23,4 +23,4 @@ app.get('/', index.home);
 app.get('/getCat', getCat.getCatGET);
 app.post('/getCat', getCat.getCatPOST);
 
-app.listen(3000);
+app.listen(3001);

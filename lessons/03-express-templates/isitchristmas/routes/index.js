@@ -1,4 +1,6 @@
-var home = function(req, res){
+routes = {}
+
+var xmasChecker = function(){
 	var today = new Date();
 	var dd = today.getDate();
 	var mm = today.getMonth();
@@ -8,7 +10,17 @@ var home = function(req, res){
 		christmasYN = 'YES'
 	}
 
-  res.render('home',{"isitchristmas": christmasYN});
+	return christmasYN;
+}
+
+
+routes.home = function(req, res){
+	res.render('home', {isitchristmas: xmasChecker()});
 };
 
-module.exports.home = home;
+routes.isItXmas = function(req, res) {
+
+  	res.send(xmasChecker());
+};
+
+module.exports = routes;
