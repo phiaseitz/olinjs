@@ -3,29 +3,6 @@ var router = express.Router();
 var _ = require('underscore');
 var ingredientModel = require('../models/ingredientModel');
 
-//Function that constructs and returns a cat object
-function Cat() {
-	var possibleNames = catOptions.names;
-	var possibleColors = catOptions.colors;
-	var name = possibleNames[Math.floor(Math.random() * (possibleNames.length))];
-	var age = Math.ceil(Math.random() * (10));
-
-	var colors = getCatColors(1,5,possibleColors);;
-
-	var cat = catModel({
-		name: name,
-		age: age,
-		colors: colors,
-	});
-
-	return cat;
-}
-
-function getCatColors(minColors, maxColors, allColors) {
-	var numColors = Math.floor(Math.random() * (maxColors - minColors + 1)) + minColors;
-	return _.shuffle(allColors).slice(0,numColors);
-}
-
 /*
 /ingredients =>
 Shows a list of current ingredients (Name and Price) with Out-of-Stock and edit button.
@@ -34,21 +11,40 @@ Out-of-Stock button will tell the server to label the ingredient as disabled. Th
 Edit button allows the user to submit a new name or price for the ingredient which the server will update. The edits should change the ingredient list without refreshing.*/
 
 router.get('/ingredients', function (req, res, next) {
-	res.render('ingredients', {ingredients: [
+	ingredientModel.find()
+		.exec(function (err, allIngredients) {
+		  if (err) return console.error(err);
+		 	 res.render('ingredients', {ingredients: allIngredients});
+		});
+});
+
+router.post('/addIngredient', function (req, res, next){
+	var name = req.body.name;
+	var price = req.body.price;
+	newIngredient = ingredientModel(
 		{
-			name: "test",
-			price: 12.5,
+			name: name, 
+			price: price,
 			inStock: true,
-		},{
-			name: "toast",
-			price: 10.5,
-			inStock: true,
-		}]});
+		})
+		.save(function (err, newIngredient){
+			console.log(newIngredient);
+			res.send(newIngredient);
+	});
+});
+
+router.post('/setOutOfStock', function (req, res, next){
+	res.send('no more burgers');
+});
+
+router.post('/editIngredient', function (req, res, next){
+	res.send('editing ingredient');
 });
 
 router.post('/updateIngredients', function (req, res, next){
-	res.send('hello!')
+
 });
+
 
 /*
 /order =>

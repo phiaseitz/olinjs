@@ -5,7 +5,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs  = require('express-handlebars');
 
-var index = require('./routes/index');
+// var index = require('./routes/index');
 var getCat = require('./routes/getCat');
 
 var app = express();

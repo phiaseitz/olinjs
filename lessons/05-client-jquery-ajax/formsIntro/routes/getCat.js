@@ -19,6 +19,7 @@ var getCatImage = function(catParams, absolute) {
 
 routes.getCatGET = function(req, res) {
   if (req.xhr) {
+    debugger;
     res.send(getCatImage(req.query));
   } else {
     res.sendFile(getCatImage(req.query, true));
