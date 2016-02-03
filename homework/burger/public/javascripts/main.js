@@ -10,16 +10,17 @@ var onSuccess = function(data, status) {
 var onAddSuccess = function(data, status) {
   console.log(data.name);
   console.log(data.price);
-  var ingredientsDiv = $editIngredForm.find("#current_ingredients")
-  
-  //How do I do this better? This is gross and ugly. 
-  var ingredientHTMLarr = ["<div id=\"" + data.name + "_div\"> ",
-    data.name + " costs $" + data.price,
-    "<input type=\"submit\" name = \"action\" class = \"outbutton\" value=\"Out of Stock\">",
-    "<input type=\"submit\" name = \"action\" class = \"editbutton\" value=\"Edit\"> <br>"]
-  console.log(ingredientHTMLarr.join(separator = " "));
-
-  ingredientsDiv.append(ingredientHTMLarr.join(separator = " "));
+  var ingredientsTab = $editIngredForm.find("#current-ingredients")[0];
+  console.log(ingredientsTab.length);
+  var row = ingredientsTab.insertRow(-1);
+  var nameCell = row.insertCell(0);
+  nameCell.innerHTML = data.name;
+  var priceCell = row.insertCell(1);
+  priceCell.innerHTML = data.price;
+  var stockCell = row.insertCell(2);
+  stockCell.innerHTML = "<input type=\"submit\" name = \"action\" class = \"outbutton\" value=\"Out of Stock\">";
+  var editCell = row.insertCell(3);
+  editCell.innerHTML = "<input type=\"submit\" name = \"action\" class = \"editbutton\" value=\"Edit\"> <br>";
 };
 
 var onError = function(data, status) {

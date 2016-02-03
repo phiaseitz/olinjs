@@ -3,41 +3,46 @@
 <h2>Ingredients in Stock</h2>
 
 <form id="ingredients-form" action="updateIngredients" method="POST">
-	<div id="current_ingredients">
+	<table border="1" id="current-ingredients">
+		<tr>
+			<td>
+				Ingredient Name
+			</td>
+			<td>
+				Price
+			</td>
+			<td>
+				Set Stock
+			</td>
+			<td>
+				Edit
+			</td>
+		</tr>
 		{{#each ingredients}}
-		{{#if this.inStock}}
-			<div id="{{this.name}}_div">
-				{{this.name}} costs ${{this.price}}  
+		<tr>
+			<td>
+				{{this.name}}
+			</td>
+			<td>
+				{{this.price}}
+			</td>
+			<td>
 				<input 
 					type="submit" 
 					name = "action"
 					class = "outbutton"
 					value="Out of Stock">
+			</td>
+			<td>
 				<input
-					type="submit" 
-					name = "action"
-					class = "editbutton"
-					value="Edit">
-				<br>
-			</div>
-		{{else}}
-			<div id="{{this.name}}_div" style="display: none;">
-				{{this.name}} costs ${{this.price}}  
-				<input 
-					type="submit" 
-					name = "action"
-					class = "outbutton"
-					value="Out of Stock">
-				<input
-					type="submit" 
-					name = "action"
-					class = "outbutton"
-					value="Edit">
-				<br>
-			</div>
-		{{/if}}
-	{{/each}}
-	</div>
+						type="submit" 
+						name = "action"
+						class = "editbutton"
+						value="Edit">
+			</td>
+		</tr>
+		{{/each}}
+	</table>
 </form>
 <form id="add-ingredients-form" action="updateIngredients" method="POST">
 	<div id="add_ingredients">
