@@ -12,8 +12,13 @@ var onCompleteOrderSuccess = function(data, status) {
 
 var onOrderSubmitSuccess = function (data, status) {
   var $orderMessage = $("#order-message");
+  $('input:checkbox').removeAttr('checked');
 
-  $orderMessage.html("<h2> Order Submitted Successfully! </h2>");
+  var orderCostField = $orderForm.find("#orderCost")[0];
+
+  orderCostField.innerHTML = "0";
+
+  alert("Congratulations! You've submitted an order");
 }
 
 var onEditSuccess = function(data, status) {
@@ -29,7 +34,6 @@ var onEditSuccess = function(data, status) {
 };
 
 var onToggleSuccess = function(data, status) {
-  // var ingredientsTab = $editIngredForm.find("#current-ingredients")[0];
   var ingredientRow = $("#" + data._id)[0].cells;
 
   //Update stock status. 
@@ -41,11 +45,15 @@ var onToggleSuccess = function(data, status) {
   if (data.inStock) {
     stockButton.prop('value', 'Out of Stock');
   } else {
-    stockButton.prop('value', 'Back In Stock');
+    stockButton.prop('value', 'Restock');
   }
 }
 
 var onAddSuccess = function(data, status) {
+  $addIngredForm.find("#addName").val("");
+  $addIngredForm.find("#addPrice").val("");
+
+
   var ingredientsTab = $editIngredForm.find("#current-ingredients")[0];
   
   var row = ingredientsTab.insertRow(-1);

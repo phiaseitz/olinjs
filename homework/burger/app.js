@@ -7,12 +7,13 @@ var exphbs  = require('express-handlebars');
 
 var ingredients = require('./routes/ingredients');
 var order = require('./routes/order');
-var kitchen = require('./routes/kitchen')
+var kitchen = require('./routes/kitchen');
+var favicon = require('serve-favicon');
+
 
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/cats');
-
+mongoose.connect('mongodb://localhost/burgers');
 
 var db = mongoose.connection;
 
@@ -23,6 +24,8 @@ db.once('open', function() {
 
 
 var app = express();
+app.use(favicon(path.join(__dirname,'public','images','burger.png')));
+
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
