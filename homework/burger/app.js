@@ -4,7 +4,11 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var exphbs  = require('express-handlebars');
+
 var ingredients = require('./routes/ingredients');
+var order = require('./routes/order');
+var kitchen = require('./routes/kitchen')
+
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/cats');
@@ -29,13 +33,16 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 
-// app.get('/', ingredients);
-app.get('/ingredients', ingredients);
-// app.get('/order', ingredients);
-// app.get('/kitchen', ingredients);
-app.post('/setOutOfStock', ingredients);
-app.post('/editIngredient', ingredients)
-app.post('/addIngredient', ingredients);
-app.post('/updateIngredients', ingredients);
+app.get('/ingredients', ingredients.ingredients);
+app.post('/toggleIngredientStock', ingredients.toggleIngredientStock);
+app.post('/editIngredient', ingredients.editIngredient)
+app.post('/addIngredient', ingredients.addIngredient);
+app.post('/updateIngredients', ingredients.updateIngredients);
+
+app.get('/order', order.order);
+app.post('/addOrder', order.addOrder);
+
+app.get('/kitchen', kitchen.kitchen);
+app.post('/completeOrder', kitchen.completeOrder);
 
 app.listen(3000);

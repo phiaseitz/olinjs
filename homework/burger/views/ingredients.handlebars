@@ -12,6 +12,9 @@
 				Price
 			</td>
 			<td>
+				In Stock?
+			</td>
+			<td>
 				Set Stock
 			</td>
 			<td>
@@ -19,31 +22,59 @@
 			</td>
 		</tr>
 		{{#each ingredients}}
-		<tr>
+		<tr id = "{{this._id}}">
 			<td>
-				{{this.name}}
-			</td>
-			<td>
-				{{this.price}}
-			</td>
-			<td>
-				<input 
-					type="submit" 
-					name = "action"
-					class = "outbutton"
-					value="Out of Stock">
+				<input
+					id = "{{this._id}}_namebox"
+					class = "namebox"
+					type = "text"
+					disabled = "disabled"
+					value = {{this.name}}>
 			</td>
 			<td>
 				<input
-						type="submit" 
-						name = "action"
-						class = "editbutton"
-						value="Edit">
+					id = "{{this._id}}_pricebox"
+					class = "pricebox"
+					type = "text"
+					disabled = "disabled"
+					value = {{this.price}}>
+			</td>
+			<td>
+				{{#if this.inStock}}
+					Yes
+				{{else}}
+					No
+				{{/if}}
+			</td>
+			<td>
+				<input 
+					id = "{{this._id}}_stockbutton"
+					type="submit" 
+					name = "action"
+					class = "outbutton"
+					{{#if this.inStock}}
+						value="Out of Stock"
+					{{else}}
+						value="Back in Stock"
+					{{/if}}
+					>
+			</td>
+			<td>
+				<input
+					id = "{{this._id}}_editbutton"
+					type="button" 
+					name = "action"
+					class = "editbutton"
+					value="Edit"
+					onclick = "enableEditing(this)">
 			</td>
 		</tr>
 		{{/each}}
 	</table>
 </form>
+
+<h2>Add a New Ingredient</h2>
+
 <form id="add-ingredients-form" action="updateIngredients" method="POST">
 	<div id="add_ingredients">
 		Name: <input type="text" name="name" id="addName"/>

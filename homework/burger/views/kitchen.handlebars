@@ -1,0 +1,33 @@
+<h1>Pending Orders</h1>
+
+<form id="kitchen-form" action="updateIngredients" method="POST">
+	<table border="1" id="pending-orders">
+		<tr>
+			<td>
+				Order
+			</td>
+			<td>
+				Completed?
+			</td>
+		</tr>
+		{{#each orders}}
+		<tr id = "{{this._id}}">
+			<td>
+				<ul id = "{{this._id}}_ingredients">
+					{{#each this.ingredients}}
+					<li>{{this.name}}</li>
+					{{/each}}
+				</ul>
+			</td>
+			<td>
+				<input 
+					id = "{{this._id}}_completedbutton"
+					type="submit" 
+					name = "action"
+					class = "completedbutton"
+					value = "Completed">
+			</td>
+		</tr>
+		{{/each}}
+	</table>
+</form>

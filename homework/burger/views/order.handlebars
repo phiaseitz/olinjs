@@ -1,0 +1,48 @@
+<h1>Orders</h1>
+
+<h2>Create a new Order</h2>
+
+<form id="order-form" action="createOrder" method="POST">
+	<table border="1" id="current-ingredients">
+		<tr>
+			<td>
+				Include in Order
+			</td>
+			<td>
+				Ingredient Name
+			</td>
+			<td>
+				Price
+			</td>
+		</tr>
+		{{#each ingredients}}
+		<tr id = "{{this._id}}">
+			<td>
+				{{#if this.inStock}}
+					<input id="{{this._id}}_include" type="checkbox" onclick="addIngredientToOrder(this)">
+				{{else}}
+					<input id="{{this._id}}_include" type="checkbox" onclick="addIngredientToOrder(this)" disabled="disabled">
+				{{/if}}
+			</td>
+			<td>
+				{{this.name}}
+			</td>
+			<td>
+				{{this.price}}
+			</td>
+		</tr>
+		{{/each}}
+	</table>
+
+	<h2>Total Cost</h2>
+		<p id="orderCost">0</p>
+
+	<input
+		type="submit" 
+		name = "action"
+		value="Submit Order">	
+</form> 
+
+<div id="order-message">
+	
+</div>
