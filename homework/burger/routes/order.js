@@ -23,7 +23,6 @@ routes.addOrder = function (req, res, next){
 	var ingredients = req.body['ingredients[]'].map(function(id){
 		return mongoose.Types.ObjectId(id);
 	});
-	console.log(ingredients);
 	orderModel(
 		{ 
 			price: req.body.price,
@@ -31,7 +30,6 @@ routes.addOrder = function (req, res, next){
 			completed: false,
 		})
 		.save(function (err, newOrder){
-			console.log(newOrder);
 			res.send(newOrder);
 	});
 }

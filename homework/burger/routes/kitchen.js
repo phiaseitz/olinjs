@@ -1,6 +1,5 @@
 var ingredientModel = require('../models/ingredientModel');
 var orderModel = require('../models/orderModel');
-var Promise = require('es6-promise').Promise;
 
 var routes = {}
 /*
@@ -15,7 +14,6 @@ routes.kitchen = function (req, res, next) {
 		.populate('ingredients')
 		.exec(function (err, allOrders) {
 		  if (err) return console.error(err);
-		  console.log(allOrders);
 		  res.render('kitchen', {orders: allOrders});
 		 });
 }

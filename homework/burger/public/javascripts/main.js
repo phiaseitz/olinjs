@@ -4,8 +4,6 @@ var $orderForm = $("#order-form");
 var $kitchenForm = $("#kitchen-form");
 
 var onCompleteOrderSuccess = function(data, status) {
-  console.log(data);
-
   $kitchenForm.find("#" +  data._id).remove();
 };
 
@@ -152,15 +150,11 @@ $orderForm.submit(function(event){
   var orderIngredients = $orderForm.find('input:checkbox:checked');
 
   var orderIngredientIds = orderIngredients.map(function(i){
-    console.log(typeof(i));
     return orderIngredients[i].id.replace("_include", "");
   }).toArray();
 
   var orderCostField = $orderForm.find("#orderCost")[0];
   var orderPrice = +orderCostField.innerHTML;
-
-  console.log(orderIngredientIds.length);
-  console.log(orderIngredientIds);
 
   $.post("addOrder", {
       ingredients: orderIngredientIds,

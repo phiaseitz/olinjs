@@ -40,7 +40,6 @@ app.get('/ingredients', ingredients.ingredients);
 app.post('/toggleIngredientStock', ingredients.toggleIngredientStock);
 app.post('/editIngredient', ingredients.editIngredient)
 app.post('/addIngredient', ingredients.addIngredient);
-app.post('/updateIngredients', ingredients.updateIngredients);
 
 app.get('/order', order.order);
 app.post('/addOrder', order.addOrder);

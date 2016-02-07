@@ -1,4 +1,3 @@
-var _ = require('underscore');
 var ingredientModel = require('../models/ingredientModel');
 
 var routes = {};
@@ -28,7 +27,6 @@ routes.addIngredient = function (req, res, next){
 			inStock: true,
 		})
 		.save(function (err, newIngredient){
-			console.log(newIngredient);
 			res.send(newIngredient);
 	});
 }
@@ -62,9 +60,5 @@ routes.editIngredient = function (req, res, next){
 		}
 	);
 }
-
-routes.updateIngredients = function (req, res, next){
-
-};
 
 module.exports = routes;
