@@ -19,9 +19,16 @@ routes.home = function (req, res, next) {
 				.populate('user')
 				.exec(function(err, twotes){
 					if (req.session.user){
+						var flaggedTwotes = twotes.map(function(twote){
+							if (req.session.user._id == twote.user._id){
+								twote.isCurrentUser = 1;
+							} 	
+							return twote
+						})
+
 						res.render('index', {
 							user: req.session.user,
-							twotes: twotes,
+							twotes: flaggedTwotes,
 							users: users,
 						});
 					} else {
@@ -60,6 +67,10 @@ routes.newTwote = function (req, res, next) {
 }
 
 routes.login = function(req, res, next){
+	console.log(req.query);
+	if (req.query.action === 'Log Out'){
+		req.session.destroy();
+	}
 	res.render('login');
 }
 
@@ -86,6 +97,14 @@ routes.signIn = function(req, res, next){
 		}
 	})
 
+}
+
+routes.deleteTwote = function(req, res, next){
+	twote.findById(mongoose.Types.ObjectId(req.body.id), function(err, twotes){
+		twotes.remove();
+		if (err) return console.error(err);
+		res.send(twotes);
+	})
 }
 
 module.exports = routes;

@@ -42,5 +42,5 @@ app.get('/home', index.home);
 app.get('/login', index.login);
 app.post('/signIn', index.signIn);
 app.post('/newTwote', index.newTwote);
-
+app.post('/deleteTwote', index.deleteTwote);
 app.listen(3000);

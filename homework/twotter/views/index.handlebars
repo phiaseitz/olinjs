@@ -1,23 +1,24 @@
-<h1>Welcome to Twotter</h1>
+<div id="header">
+	<h1>Twotter</h1>
+	<form id="login-out-form" action="login" method="get">
+		<input
+			type="submit" 
+			name="action"
+			id="loginoutbutton"
+			{{#if user}}
+				value="Log Out"	
+				class = "logout"
+			{{else}}
+				value="Log In"	
+				class = "login"
+				
+			{{/if}}
+			>
+	</form>
+</div>
 
-<h2>Twotes</h2>
 
-<form id="login-out-form" action="login" method="get">
-	<input
-		type="submit" 
-		name="action"
-		id="loginoutbutton"
-		{{#if user}}
-			value="Log Out"	
-			class = "logout"
-			onclick = "logOutUser()"
-		{{else}}
-			value="Log In"	
-			class = "login"
-			onclick = "getLoginForm()"
-		{{/if}}
-		>
-</form>
+
 <form id="new-twote-form" action="newTwote" method="POST">
 	<div id="new-twote" class={{user._id}}>
 		<p id="new-twote-header">
@@ -47,46 +48,56 @@
 			
 </form>
 <br>
-<table border="1" id="twotes">
-	{{#each twotes}}
-	<tr class = "twote_{{this.user._id}}">
-		<td>
-			<p class= "twote-text">
-				{{this.text}}
-			</p>
-			<p class="twote-author">
-				{{this.user.username}}
-			</p>
-			<button 
-				onclick="deleteTwote(this)"
-				class="deleteTwote">
-				Delete Twote
-			</button>
-			
-
-			
-		</td>
-	</tr>
-	{{/each}}
-</table>
-<br>
-<table border="1" id="users">
+<table id="content">
 	<tr>
 		<td>
-			Users
+			<table border="0" id="twotes">
+				{{#each twotes}}
+				<tr 
+					id = "twote_{{this._id}}"
+					class = "twote_{{this.user._id}}">
+					<td class="twote">
+						<div class="twote-header">
+							<p class= "twote-text">
+								{{this.text}}
+							</p>
+							{{#if this.isCurrentUser}}
+								<button 
+									id="delete_{{this._id}}"
+									onclick="deleteTwote(this)"
+									class="deleteTwote">
+									X
+								</button>
+							{{/if}}	
+						</div>
+						<p class="twote-author">
+							-{{this.user.username}}
+						</p>
+						
+					</td>
+				</tr>
+				{{/each}}
+			</table>
 		</td>
-	</tr>
-	{{#each users}}
-	<tr id = "user_{{this._id}}">
+
 		<td>
-			<button 
-				onclick="highlightUserTwotes(this)"
-				class="highlightTwotes">
-				{{this.username}}
-			</button>
+			<table border="0" id="users">
+				{{#each users}}
+				<tr id = "user_{{this._id}}">
+					<td>
+						<button 
+							onclick="highlightUserTwotes(this)"
+							class="highlight-twotes">
+							{{this.username}}
+						</button>
+					</td>
+				</tr>
+				{{/each}}
+			</table>
 		</td>
 	</tr>
-	{{/each}}
+	
+	
 </table>
 
 

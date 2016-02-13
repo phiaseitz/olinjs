@@ -1,4 +1,5 @@
 var $newTwoteForm = $("#new-twote-form");
+var $logInOutForm = $("#log-in-out-form");
 
 var currentUser;
 
@@ -13,14 +14,20 @@ var onNewTwoteSuccess = function(data, status) {
 
 
   var twoteTextHTML = '<p class="towte-text"> ' + data.twote.text + '</p>';
-  var twoteAuthorHTML = '<p class="towte-author"> ' + data.user.username + '</p>';
+  var twoteAuthorHTML = '<p class="towte-author"> -' + data.user.username + '</p>';
+  var deleteButtonHTML = '<button id="delete_' + data.twote._id + '" onclick="deleteTwote(this)" class="deleteTwote">X</button>';
 
   var twoteTable = $("#twotes tbody");
   console.log(twoteTable);
 
-  twoteTable.prepend('<tr class="twote_' + data.user._id + '"> <td> ' + twoteTextHTML + twoteAuthorHTML + '</td> </tr>');
+  twoteTable.prepend('<tr id="twote_' + data.twote._id + '" class="twote_' + data.user._id + '"> <td class="twote"> <div class="towte-header">' + twoteTextHTML + deleteButtonHTML + '</div>' + twoteAuthorHTML + ' </td> </tr>');
 
 };
+
+var onDeleteSuccess = function(data, status) {
+  console.log(data);
+  $("#twote_" + data._id).remove();
+}
 
 var onSignInSuccess = function(data, status) {
   currentUser = data;
@@ -53,12 +60,18 @@ var getLoginForm = function(){
 } 
 
 var logOutUser = function(){
+  console.log("beep");
   $.get("home");
 }
 
 //TODO: Make this work for only the current user
 var deleteTwote = function(context){
-  console.log("deleting twote!");
+  var twoteId = context.id.replace('delete_', '');
+  console.log(twoteId);
+
+  $.post("deleteTwote", {id: twoteId})
+    .done(onDeleteSuccess)
+    .error(onError);
 }
 
 //TODO: Actually hightlight twotes: (probably by assigning a class to those twotes)
@@ -81,5 +94,12 @@ $newTwoteForm.submit(function(event) {
   })
     .done(onNewTwoteSuccess)
     .error(onError);
+});
+
+$logInOutForm.submit(function(event) {
+
+  event.preventDefault();
+
+  console.log(event);
 });
 
