@@ -1,102 +1,87 @@
-var user = require('../models/userModel');
+var User = require('../models/userModel');
 var twote = require('../models/twoteModel');
 var mongoose = require('mongoose');
+var passport = require('passport');
 
 var routes = {};
-/*
-/ingredients =>
-Shows a list of current ingredients (Name and Price) with Out-of-Stock and edit button.
-An Add button should allow the user to specify the name and price of a new ingredient which should appear on the page without requiring a refresh.
-Out-of-Stock button will tell the server to label the ingredient as disabled. The ingredient should be removed from the current page without refreshing. (Optional: make it toggleable to "add" more of the ingredient. In this case, do not remove the ingredient from the page, but make note through words or style that it is unavailable.)
-Edit button allows the user to submit a new name or price for the ingredient which the server will update. The edits should change the ingredient list without refreshing.*/
 
 routes.home = function (req, res, next) {
 	console.log(req.session);
 
-	user.find({}, 
+	User.find({}, 
 		function(err, users){
+
+			var cleanedUsers = users.map(function(user){
+				return user.convertToDispJson();
+			});
+
 			twote.find({})
+				.sort({_id: "desc"})
 				.populate('user')
 				.exec(function(err, twotes){
-					if (req.session.user){
-						var flaggedTwotes = twotes.map(function(twote){
-							if (req.session.user._id == twote.user._id){
-								twote.isCurrentUser = 1;
-							} 	
-							return twote
-						})
+					console.log(twotes)
+					var cleanedTwotes	= twotes.map(function(twote){
+						//Clearly, recleaning the user json every time isn't the best way to go about this. Fix this if I have time. 
+						var cleanedTwote = {
+							_id: twote._id,
+							text: twote.text,
+							user: twote.user.convertToDispJson()
+						};
+						// twote.user = twote.user;
+						return cleanedTwote;
+					});
 
-						res.render('index', {
-							user: req.session.user,
-							twotes: flaggedTwotes,
-							users: users,
-						});
+					if (req.session.passport && req.session.passport.user){
+
+						passport.deserializeUser(req.session.passport.user, function(err, user){
+							var flaggedTwotes = cleanedTwotes.map(function(twote){
+								if (String(user._id) === String(twote.user._id)){
+									twote.isCurrentUser = 1;
+								} 	
+								return twote
+							})
+
+							var cleanedUser = user.convertToDispJson();
+
+							res.render('index', {
+								user: cleanedUser,
+								twotes: flaggedTwotes,
+								users: cleanedUsers,
+							});
+
+						})						
 					} else {
-						res.render('index', {
-							twotes: twotes,
-							users: users,
-						});
+						res.redirect('/login');
 					}
 				}
 			)
 		}
 	)
-	
-	
 }
 
 routes.newTwote = function (req, res, next) {
-	console.log(req.body);
+
 	twote({
-		user: mongoose.Types.ObjectId(req.body.userId),
+		user: mongoose.Types.ObjectId(req.session.passport.user),
 		text: req.body.text,
 	})
 	.save(function(err, newTwote){
-		user.findById(mongoose.Types.ObjectId(req.body.userId),
-			function (err, twoteUser){
-				twoteUser.twotes.push(newTwote._id);
-				twoteUser.save(function(err, savedUser){
-					res.send({
-						twote: newTwote,
-						user: twoteUser
-					});	
-				})
-			}
-		)
+		passport.deserializeUser(req.session.passport.user, function(err, user){
+			user.twotes.push(newTwote._id);
+			user.save(function(err, savedUser){
+				res.send({twote: newTwote, user: savedUser.convertToDispJson()});
+			})
+			
+		})	
 	})
 }
 
 routes.login = function(req, res, next){
-	console.log(req.query);
-	if (req.query.action === 'Log Out'){
-		req.session.destroy();
-	}
 	res.render('login');
 }
 
-routes.signIn = function(req, res, next){
-	user.find({username: req.body.username}, function (err, existingUser){
-		if (err) return console.error(err);
-		console.log(existingUser.length);
-		if (existingUser.length < 1) {
-			console.log('new user');
-			user(
-			{
-				username: req.body.username, 
-				twotes: [],
-			})
-			.save(function (err, newUser){
-				req.session.user = newUser;
-				res.redirect("/");
-			});
-
-		} else {
-			console.log('exisiting user');
-			req.session.user = existingUser[0];
-			res.redirect("/");
-		}
-	})
-
+routes.register = function(req, res, next){
+	res.render('register');
 }
 
 routes.deleteTwote = function(req, res, next){

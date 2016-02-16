@@ -13,14 +13,13 @@ var onNewTwoteSuccess = function(data, status) {
   console.log(data);
 
 
-  var twoteTextHTML = '<p class="towte-text"> ' + data.twote.text + '</p>';
-  var twoteAuthorHTML = '<p class="towte-author"> -' + data.user.username + '</p>';
+  var twoteTextHTML = '<p class="twote-text"> ' + data.twote.text + '</p>';
+  var twoteAuthorHTML = '<p class="twote-author"> -' + data.user.username + '</p>';
   var deleteButtonHTML = '<button id="delete_' + data.twote._id + '" onclick="deleteTwote(this)" class="deleteTwote">X</button>';
 
-  var twoteTable = $("#twotes tbody");
-  console.log(twoteTable);
+  var newTwoteRow = '<tr id="twote_' + data.twote._id + '" class="twote_' + data.user._id + '"> <td class="twote"> <div class="twote-header">' + twoteTextHTML + deleteButtonHTML + '</div>' + twoteAuthorHTML + ' </td> </tr>';
 
-  twoteTable.prepend('<tr id="twote_' + data.twote._id + '" class="twote_' + data.user._id + '"> <td class="twote"> <div class="towte-header">' + twoteTextHTML + deleteButtonHTML + '</div>' + twoteAuthorHTML + ' </td> </tr>');
+  $('#twotes tr:first').after(newTwoteRow);
 
 };
 
@@ -76,10 +75,28 @@ var deleteTwote = function(context){
 
 //TODO: Actually hightlight twotes: (probably by assigning a class to those twotes)
 var highlightUserTwotes = function(context){
+  console.log(context);
   var userTableRow = context.parentElement.parentElement;
   var userId = userTableRow.id.replace('user_', '');
-  var userTwotes = $.find(".twote_" + userId);
-  console.log(userTwotes);
+
+  var userTwotes = $(".twote_" + userId);
+
+  // userTwotes.forEach(function (userTwote){
+  //   userTwote.addClass("selected");
+  // })
+  userTwotes.addClass("selected");
+}
+
+var unHighlightUserTwotes = function(context){
+  var userTableRow = context.parentElement.parentElement;
+  var userId = userTableRow.id.replace('user_', '');
+
+  var userTwotes = $(".twote_" + userId);
+
+  // userTwotes.forEach(function (userTwote){
+  //   userTwote.addClass("selected");
+  // })
+  userTwotes.removeClass("selected");
 }
 
 $newTwoteForm.submit(function(event) {
@@ -88,6 +105,9 @@ $newTwoteForm.submit(function(event) {
 
   var text = $newTwoteForm.find("#twote-text").val();
   var userId = $newTwoteForm.find("#new-twote").attr("class");
+
+  $newTwoteForm[0].reset();
+
   $.post("newTwote", {
     userId: userId,
     text: text
@@ -96,10 +116,4 @@ $newTwoteForm.submit(function(event) {
     .error(onError);
 });
 
-$logInOutForm.submit(function(event) {
-
-  event.preventDefault();
-
-  console.log(event);
-});
 

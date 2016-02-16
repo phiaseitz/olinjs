@@ -1,17 +1,12 @@
 <h1>Welcome to Twotter</h1>
 
-<h2>Login</h2>
+<h2>Create a new account</h2>
 
 {{#if error}}
     <div class="alert alert-danger">{{error}}</div>
 {{/if}}
 
-
-
-
-
-
-<form id="login-form" action="login" method="POST">
+<form id="register-form" action="signup" method="POST">
 	Username: <input
 		type="text" 
 		name="username"
@@ -23,12 +18,7 @@
 	<input
 		type="submit" 
 		name = "action"
-		value="Log In">		
+		value="Register User">		
 </form>
-
-Don't have an account? 
-<a href="/register">Sign up</a>
-or
-<a href="/auth/facebook">Log in with Facebook</a>
 
  

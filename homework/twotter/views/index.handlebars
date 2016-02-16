@@ -1,57 +1,69 @@
 <div id="header">
-	<h1>Twotter</h1>
-	<form id="login-out-form" action="login" method="get">
+	<p class="title">Twotter</p>
+	{{#if user}}
+		<form id="login-form" action="/logout" method="get">
 		<input
 			type="submit" 
 			name="action"
-			id="loginoutbutton"
-			{{#if user}}
-				value="Log Out"	
-				class = "logout"
-			{{else}}
-				value="Log In"	
-				class = "login"
-				
-			{{/if}}
-			>
-	</form>
-</div>
-
-
-
-<form id="new-twote-form" action="newTwote" method="POST">
-	<div id="new-twote" class={{user._id}}>
-		<p id="new-twote-header">
-			{{#if user}}
-				Post a new twote as {{user.username}}!
-			{{else}}
-				Log in to twote!
-			{{/if}}
-		</p> 
+			id="loginbutton"
+			value="Log Out"	
+			class = "logout">
+		</form>
+	{{else}}
+		<form id="login-form" action="login" method="get">
 		<input
-			id="twote-text"
-			type="textarea" 
-			class = "twotetext"
-			{{#unless user}}
-				disabled = 'disabled'
-			{{/unless}}>
-		<input
-			id="post-twote"
 			type="submit" 
-			name = "action"
-			class = "addbutton"
-			value="Post Twote"
-			{{#unless user}}
-				disabled = 'disabled'
-			{{/unless}}>
-	</div>
+			name="action"
+			id="loginbutton"
+			value="Log In"	
+			class = "login">
+		</form>
+	{{/if}}
+</div>
 			
-</form>
+
 <br>
 <table id="content">
 	<tr>
-		<td>
+		<td valign="top">
 			<table border="0" id="twotes">
+				<tr>
+					<td class="twote">
+							<div id="new-twote" class={{user._id}}>
+								<div class="twote-header">
+									<form id="new-twote-form" action="newTwote" method="POST">
+										<input
+											id="twote-text"
+											type="textarea" 
+											class = "twotetext"
+											{{#unless user}}
+												disabled = 'disabled'
+											{{/unless}}>
+										<input
+											id="post-twote"
+											type="submit" 
+											name = "action"
+											class = "addbutton"
+											value=">"
+											{{#unless user}}
+												disabled = 'disabled'
+											{{/unless}}>
+									</form>
+								</div>
+								<p class="twote-author">
+									{{#if user}}
+										-{{user.username}}
+									{{else}}
+										Log in to twote!
+									{{/if}}
+								</p> 
+							</div>
+						
+					</td>
+				</tr>
+
+
+
 				{{#each twotes}}
 				<tr 
 					id = "twote_{{this._id}}"
@@ -80,13 +92,14 @@
 			</table>
 		</td>
 
-		<td>
+		<td valign="top">
 			<table border="0" id="users">
 				{{#each users}}
 				<tr id = "user_{{this._id}}">
 					<td>
 						<button 
 							onclick="highlightUserTwotes(this)"
+							onfocusout="unHighlightUserTwotes(this)"
 							class="highlight-twotes">
 							{{this.username}}
 						</button>
