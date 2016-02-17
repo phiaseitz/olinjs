@@ -41,6 +41,15 @@ routes.register = function(req, res) {
     });
 };
 
+routes.logout = function(req, res){
+  req.logout();
+  res.redirect('/');
+};
+
+routes.facebookCallback = function(req, res) {
+    res.redirect('/');
+  };
+
 routes.signup = passport.authenticate('local-signup', {
     successRedirect : '/', // redirect to the secure profile section
     failureRedirect : '/signup', // redirect back to the signup page if there is an error

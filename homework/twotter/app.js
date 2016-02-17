@@ -64,15 +64,9 @@ app.get('/auth/facebook',
   function(req, res){});
 
 app.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { failureRedirect: '/' }),
-  function(req, res) {
-    res.redirect('/');
-  });
+  passport.authenticate('facebook', { failureRedirect: '/' }),userAuth.facebookCallback);
 
-app.get('/logout', function(req, res){
-  req.logout();
-  res.redirect('/');
-});
+app.get('/logout', userAuth.logout);
 
 app.post('/register', userAuth.register);
 

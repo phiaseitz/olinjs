@@ -13,7 +13,7 @@ var favicon = require('serve-favicon');
 
 
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/burgers');
+mongoose.connect('mongodb://localhost/test');
 
 var db = mongoose.connection;
 
@@ -48,3 +48,5 @@ app.get('/kitchen', kitchen.kitchen);
 app.post('/completeOrder', kitchen.completeOrder);
 
 app.listen(3000);
+
+module.exports = app;

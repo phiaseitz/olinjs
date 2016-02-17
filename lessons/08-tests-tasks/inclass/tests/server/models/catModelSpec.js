@@ -17,6 +17,22 @@ describe('Cat Model', function() {
     });
   });
 
+  it('should return the correct cat', function(done){
+    Cat.find({name: 'Fluffy'},function(err, cat){
+
+      if (err){
+        return done(err);
+      } else if(cat[0].name ===  'Fluffy' && 
+          cat[0].colors === ['orange', 'white']) 
+      {
+        return done();
+      } else {
+        return done("Returned wrong cat: " + cat);
+      }
+    done();
+    });
+  });
+
   // What else can you test?
 
   it('should remove a cat by name', function(done) {
@@ -27,4 +43,6 @@ describe('Cat Model', function() {
       done();
     });
   });
+
+
 });
