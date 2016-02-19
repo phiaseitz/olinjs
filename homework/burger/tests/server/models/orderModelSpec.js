@@ -5,6 +5,10 @@ var expect = require('chai').expect;
 var Order = require('./../../../models/orderModel');
 
 describe('Order Model', function() {
+	/*
+		Removing all the old things from the database so we always
+		have only known ingredients in the database
+	*/
 	it('should remove all orders', function(done) {
 		Order.remove({}, function(err) {
       if (err) {
@@ -13,7 +17,7 @@ describe('Order Model', function() {
 	     done();
 	  });
 	});
-	
+
 	it('should create a new order', function(done) {
 		
 		var order = new Order({
@@ -32,6 +36,6 @@ describe('Order Model', function() {
 	});
 
 	
-
+	//TODO test find by id?
 
 });

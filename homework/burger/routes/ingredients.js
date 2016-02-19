@@ -19,7 +19,6 @@ routes.ingredients = function (req, res, next) {
 routes.addIngredient = function (req, res, next){
 	var name = req.body.name;
 	var price = req.body.price;
-	
 	ingredientModel(
 		{
 			name: name, 
