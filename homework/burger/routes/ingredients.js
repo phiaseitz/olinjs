@@ -11,7 +11,7 @@ Edit button allows the user to submit a new name or price for the ingredient whi
 routes.ingredients = function (req, res, next) {
 	ingredientModel.find()
 		.exec(function (err, allIngredients) {
-		  if (err) return console.error(err);
+		  if (err) return console.error(err);//Do you want to render on error?
 		 	 res.render('ingredients', {ingredients: allIngredients});
 		});
 }
@@ -19,6 +19,7 @@ routes.ingredients = function (req, res, next) {
 routes.addIngredient = function (req, res, next){
 	var name = req.body.name;
 	var price = req.body.price;
+	//you should probably use new on a constructor. 
 	ingredientModel(
 		{
 			name: name, 

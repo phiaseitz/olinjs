@@ -20,9 +20,11 @@ routes.order = function (req, res, next) {
 }
 
 routes.addOrder = function (req, res, next){
+	//breaks if order has only 1 ingredient
 	var ingredients = req.body['ingredients[]'].map(function(id){
 		return mongoose.Types.ObjectId(id);
 	});
+	//use new with constructors. 
 	orderModel(
 		{ 
 			price: req.body.price,

@@ -1,3 +1,4 @@
+//you should break this file up by page.
 var $editIngredForm = $("#ingredients-form");
 var $addIngredForm = $("#add-ingredients-form");
 var $orderForm = $("#order-form");
@@ -79,12 +80,15 @@ var onError = function(data, status) {
   console.log("error", data);
 };
 
+//this also has some interesting behavior if you check something 
+//then reload the page in my browser
 var addIngredientToOrder = function(context){
+  //you could have also used jquey to do this.
   var ingredientRow = context.parentElement.parentElement.cells;
   var ingredientPrice = +ingredientRow[2].innerHTML;
   
-  var orderCostField = $orderForm.find("#orderCost")[0];
-  var orderPrice = +orderCostField.innerHTML;
+  var orderCostField = $orderForm.find("#orderCost")[0]; //Jquery
+  var orderPrice = +orderCostField.innerHTML; //not Jquery. jquery has .html()
   
   if (context.checked){
     orderPrice += ingredientPrice;
