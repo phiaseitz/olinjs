@@ -16,7 +16,6 @@ var todo = angular.module('todoApp', ['ngMaterial'])
             })
             .success(function(data) {
                 $scope.todos = data;
-                console.log(data);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
@@ -33,7 +32,6 @@ var todo = angular.module('todoApp', ['ngMaterial'])
         .success(function(data) {
             $scope.todos = data;
             $scope.activeCount = $scope.todos.length;
-            console.log(data);
         })
         .error(function(data) {
             console.log('Error: ' + data);
@@ -56,7 +54,6 @@ var todo = angular.module('todoApp', ['ngMaterial'])
 
     // complete a todo after checking it
     $scope.toggleTodoCompleted = function(todo) {
-        console.log('toggling!')
         $http.post('/api/toggleTodoCompleted/', {todo: todo, status: tabs[$scope.selectedIndex].title})
             .success(function(data) {
                 $scope.todos = data;
@@ -72,15 +69,12 @@ var todo = angular.module('todoApp', ['ngMaterial'])
     };
 
     $scope.startEditing = function (todo) {
-        console.log("editing", todo);
         todo.editing = true;
     }
 
     $scope.saveEdits = function (todo, blur) {
-        console.log("saving todo", todo);
         $http.post('api/saveEditedTodo/', todo)
             .success(function(data){
-                console.log(data);
             })
             .error(function(data) {
                 console.log('Error: ' + data);
@@ -107,7 +101,6 @@ var todo = angular.module('todoApp', ['ngMaterial'])
     return function (scope, elem, attrs) {
         scope.$watch(attrs.todoFocus, function (newVal) {
             if (newVal) {
-                console.log('focus!');
                 $timeout(function () {
                     elem[0].focus();
                 }, 0, false);

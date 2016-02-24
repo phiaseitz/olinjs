@@ -1,7 +1,7 @@
 {
-  "name": "node-todo",
+  "name": "Wiki",
   "version": "0.0.0",
-  "description": "Simple todo application.",
+  "description": "Creating a wiki",
   "main": "server.js",
   "author": "",
   "dependencies": {
@@ -10,7 +10,7 @@
     "install": "^0.4.4",
     "jquery": "^2.2.0",
     "method-override": "~2.1.2",
-    "mongoose": "~3.6.2",
+    "mongoose": "^4.4.4",
     "morgan": "~1.2.2",
     "path": "^0.12.7",
     "serve-favicon": "^2.3.0"

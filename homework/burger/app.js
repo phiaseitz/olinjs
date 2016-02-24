@@ -47,6 +47,7 @@ app.post('/addOrder', order.addOrder);
 app.get('/kitchen', kitchen.kitchen);
 app.post('/completeOrder', kitchen.completeOrder);
 
-app.listen(3000);
+var PORT = process.env.PORT || 3000;
+app.listen(PORT);
 
 module.exports = app;

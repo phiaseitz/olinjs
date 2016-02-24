@@ -1,0 +1,59 @@
+<!-- index.html -->
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<htmls>
+<head>
+    <!-- Angulars Material CSS now available via Google CDN; version 0.6 used here -->
+    <link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.min.css">
+    <!-- My own stylesheet -->
+    <link rel="stylesheet" type="text/css" href="./stylesheets/home.css">
+    <!-- Angular Material Dependencies -->
+    <script src="//cdn.jsdelivr.net/hammerjs/2.0.4/hammer.min.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-animate.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.6/angular-aria.js"></script>
+
+    <!-- Angular Material Javascript now available via Google CDN; version 0.6 used here -->
+    <script src="//ajax.googleapis.com/ajax/libs/angular_material/0.11.2/angular-material.js"></script>
+    <script type="text/javascript" src="./javascripts/core.js"></script>
+    <title> Wiki</title>
+</head>
+
+<body>
+    <div ng-app="wikiApp">
+        <div ng-controller="AppCtrl"  class="md-red" layout="column" layout-fill>
+            
+            <div id="add-topic-form" class="row">
+                <div class="col-sm-8 col-sm-offset-2 text-center">
+                    <form ng-submit="createTopic()">
+                        <div class="form-group">
+                            <!-- BIND THIS VALUE TO formData.text IN ANGULAR -->
+                            <input type="text" placeholder="Add a topic title" ng-model="formData.title"> 
+
+                            <input type="text" placeholder="Add topic content" ng-model="formData.content"> 
+
+                            <input type="submit" id="submit" value="Submit" />
+                        </div>
+                    </form>
+                </div>
+            </div>
+                            
+            <!-- TODO LIST -->
+            <div id="topic-list">
+                    <!-- LOOP OVER THE topics IN $scope.todos -->
+                    <div class="row" ng-repeat="topic in topics">
+                    <h1>
+                        {{topic.title}}
+                    </h1>
+                    <p>
+                        {{topic.content}}
+                    </p>
+                    </div>
+            </div>
+        </div>
+    </div>
+      
+</body>
+
+</html>

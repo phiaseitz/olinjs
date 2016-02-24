@@ -5,10 +5,8 @@ var routes = {};
 var getQuery = function(status){
 	queryJson = {}
 	if (status === 'Active') {
-		console.log('Active');
 		queryJson.completed = false;
 	} else if (status === 'Completed') {
-		console.log('Completed');
 		queryJson.completed = true;
 	}
 
@@ -16,13 +14,10 @@ var getQuery = function(status){
 }
 
 routes.getTodos = function(req, res, next) {
-	console.log(req.query);
 	var queryJson = getQuery(req.query.status);
 
-	console.log(queryJson);
     // use mongoose to get all todos in the database
     Todo.find(queryJson, function(err, todos) {
-    	console.log(todos);
         // if there is an error retrieving, send the error. nothing after res.send(err) will execute
         if (err)
             res.send(err)
@@ -59,7 +54,6 @@ routes.toggleTodoCompleted = function(req, res, next) {
     	todo = todo[0];
         if (err)
             res.send(err);
-        console.log(todo);
         todo.completed = !todo.completed;
         todo.save(function (err, updatedTodo) {
         	if (err)
