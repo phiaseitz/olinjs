@@ -50,8 +50,9 @@
                     </div>
             </div>
 
-            <div id="page-content">
-            <!-- Add the content stuff here -->
+            <div id="page-content" ng-if="currentTopic">
+                <h1>{{currentTopic.title}}</h1>
+                <p>{{currentTopic.content}}</p>
             </div>
 
         </div>
