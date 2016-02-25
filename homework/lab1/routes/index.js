@@ -13,11 +13,11 @@ var getQuery = function(status){
 	return queryJson;
 }
 
-routes.getTopics = function(req, res, next) {
-    Topic.find({}, function(err, topics) {
-        
+routes.getTopicTitles = function(req, res, next) {
+    Topic.find({}, 'id title', function(err, topics) {
+        console.log(topics);
         if (err)
-            res.send(err)
+            res.send(err);
 
         res.json(topics); // return all todos in JSON format
     });
@@ -36,6 +36,16 @@ routes.createTopic = function(req, res, next) {
         res.json(topic)
     });
 
+}
+
+routes.getTopic = function (req, res, next){
+    console.log(req.query)
+    Topic.findById(req.query._id, function(err, topic){
+        if (err)
+            res.send(err);
+
+        res.send(topic);
+    })
 }
 
 // routes.toggleTodoCompleted = function(req, res, next) {

@@ -39,18 +39,21 @@
                 </div>
             </div>
                             
-            <!-- TODO LIST -->
-            <div id="topic-list">
+            <!-- Topic Nav Bar -->
+            <div id="topic-sidebar">
                     <!-- LOOP OVER THE topics IN $scope.todos -->
-                    <div class="row" ng-repeat="topic in topics">
-                    <h1>
-                        {{topic.title}}
-                    </h1>
-                    <p>
-                        {{topic.content}}
-                    </p>
+                    <div class="row">
+                        <h1>Topics</h1>
+                    </div>
+                    <div class="row" ng-repeat="topic in topicslist">
+                        <md-button ng-click="getTopic(topic)">{{topic.title}}</md-button>
                     </div>
             </div>
+
+            <div id="page-content">
+            <!-- Add the content stuff here -->
+            </div>
+
         </div>
     </div>
       

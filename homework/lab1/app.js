@@ -37,10 +37,12 @@ app.use(favicon(path.join(__dirname,'public','images','favicon.png')));
 
 // api ---------------------------------------------------------------------
 // get all todos
-app.get('/api/topics', index.getTopics);
+app.get('/api/topicTitles', index.getTopicTitles);
 
 // create todo and send back all todos after creation
 app.post('/api/create/topic', index.createTopic);
+
+app.get('/api/topic', index.getTopic)
 
 // // toggle complete status of todo
 // app.post('/api/toggleTodoCompleted', index.toggleTodoCompleted);

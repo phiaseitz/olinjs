@@ -25,12 +25,9 @@ var wiki = angular.module('wikiApp', ['ngMaterial'])
     $scope.formData = {};
 
     // when landing on the page, get all todos and show them
-    $http.get('/api/topics') //, 
-    //     {
-    //         params: { status: tabs[$scope.selectedIndex].title}
-    //     })
+    $http.get('/api/topicTitles') 
         .success(function(data) {
-            $scope.topics = data;
+            $scope.topicslist = data;
         })
         .error(function(data) {
             console.log('Error: ' + data);
@@ -44,6 +41,16 @@ var wiki = angular.module('wikiApp', ['ngMaterial'])
                 $scope.formData = {}; // clear the form so our user is ready to enter another
                 // when landing on the page, get all todos and show them     
                 $scope.topics.push(data);           
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
+
+    $scope.getTopic = function(topic) {
+        $http.get('api/topic', {params: topic})
+            .success(function(data) {
+                $scope.currentTopic = data;          
             })
             .error(function(data) {
                 console.log('Error: ' + data);
