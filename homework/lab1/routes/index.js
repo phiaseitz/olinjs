@@ -24,8 +24,6 @@ routes.getTopicTitles = function(req, res, next) {
 }
 
 routes.createTopic = function(req, res, next) {
-
-    // create a todo, information comes from AJAX request from Angular
     Topic.create({
         title : req.body.topic.title,
         content : req.body.topic.content
@@ -39,79 +37,39 @@ routes.createTopic = function(req, res, next) {
 }
 
 routes.getTopic = function (req, res, next){
-    console.log(req.query)
+    console.log(req.query);
     Topic.findById(req.query._id, function(err, topic){
         if (err)
             res.send(err);
 
-        res.send(topic);
+        res.json(topic);
     })
 }
 
-// routes.toggleTodoCompleted = function(req, res, next) {
-//     Todo.find({
-//         _id : req.body.todo._id
-//     }, function(err, todo) {
-//     	todo = todo[0];
-//         if (err)
-//             res.send(err);
-//         todo.completed = !todo.completed;
-//         todo.save(function (err, updatedTodo) {
-//         	if (err)
-//                 res.send(err)
-//             var queryJson = getQuery(req.body.status)
-// 	        Todo.find(queryJson, function(err, todos) {
-// 	            if (err)
-// 	                res.send(err)
-// 	            res.json(todos);
-// 	        });
-//         })
-//     });
+routes.updateTopic = function (req, res, next){
+    console.log(req.body);
 
-// }
+    Topic.findById(req.body.topic._id, function(err, topic){
+        topic.title = req.body.topic.title;
+        topic.content = req.body.topic.content;
 
-// routes.saveTodo = function (req, res, next) {
-// 	console.log(req.body);
-// 	Todo.find({
-//         _id : req.body._id
-//     }, function(err, todo) {
-//     	console.log(todo);
-//     	todo = todo[0];
-//         if (err)
-//             res.send(err);
-//         console.log(todo);
-//         todo.title = req.body.title;
-//         todo.save(function (err, updatedTodo) {
-//         	res.send(todo);
-//         })
-//     });
-// }
+        topic.save(function (err, updatedTopic){
+            if (err)
+                res.send(err);
+            //Return all the titles of the topics in the db. 
+            Topic.find({}, 'id title', function(err, topics) {
+                console.log(topics);
+                if (err)
+                    res.send(err);
 
-// routes.removeTodo = function(req, res, next){
-// 	Todo.remove({
-//             _id : req.body.todo._id
-//         }, function(err, todo) {
-//             if (err)
-//                 res.send(err);
+                res.json(topics); // return all todos in JSON format
+            });
+        })
 
-//             var queryJson = {};
-	
-// 			if (req.body.status === 'Active') {
-// 				console.log('Active');
-// 				queryJson.completed = false;
-// 			} else if (req.body.status === 'Completed') {
-// 				console.log('Completed');
-// 				queryJson.completed = true;
-// 			}
-
-//             // get and return all the todos after you remove one
-//             Todo.find(queryJson, function(err, todos) {
-//                 if (err)
-//                     res.send(err)
-//                 res.json(todos);
-//             });
-//         });
-// }
+        if (err)
+            res.send(err);
+    })
+}
 
 routes.home = function(req, res, next) {
     res.sendfile('./public/index.html'); // load the single view file (angular will handle the page changes on the front-end)

@@ -23,6 +23,9 @@ var wiki = angular.module('wikiApp', ['ngMaterial'])
    //  });
 
     $scope.formData = {};
+    $scope.currentTopic = {};
+    $scope.creatingTopic = false; 
+    $scope.editingTopic = false;
 
     // when landing on the page, get all todos and show them
     $http.get('/api/topicTitles') 
@@ -40,7 +43,10 @@ var wiki = angular.module('wikiApp', ['ngMaterial'])
             .success(function(data) {
                 $scope.formData = {}; // clear the form so our user is ready to enter another
                 // when landing on the page, get all todos and show them     
-                $scope.topics.push(data);           
+                $scope.topicslist.push(data); 
+                $scope.currentTopic = data;
+                $scope.creatingTopic = false;
+          
             })
             .error(function(data) {
                 console.log('Error: ' + data);
@@ -50,70 +56,38 @@ var wiki = angular.module('wikiApp', ['ngMaterial'])
     $scope.getTopic = function(topic) {
         $http.get('api/topic', {params: topic})
             .success(function(data) {
-                $scope.currentTopic = data;          
+                $scope.currentTopic = data; 
+                $scope.creatingTopic = false; 
+                $scope.editingTopic = false;        
             })
             .error(function(data) {
                 console.log('Error: ' + data);
             });
     };
+
+    $scope.showAddTopicForm = function(){
+        $scope.creatingTopic = true;
+        $scope.currentTopic = {};
+    };
+
+    $scope.updateTopic = function(topic) {
+        console.log("topic edited", $scope.currentTopic);
+        $http.post('/api/update/topic', {topic: $scope.currentTopic})
+            .success(function(data){
+                console.log(data);
+                $scope.editingTopic = false;
+                $scope.topicslist = data;
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    }
+
+    $scope.enableEditing = function(){
+        $scope.editingTopic = true;
+        console.log("editing enabled");
+    }
 })
-
-//     // complete a todo after checking it
-//     $scope.toggleTodoCompleted = function(todo) {
-//         $http.post('/api/toggleTodoCompleted/', {todo: todo, status: tabs[$scope.selectedIndex].title})
-//             .success(function(data) {
-//                 $scope.todos = data;
-//                 if (todo.completed){
-//                     $scope.activeCount -= 1;
-//                 } else {
-//                     $scope.activeCount += 1;
-//                 }
-//             })
-//             .error(function(data) {
-//                 console.log('Error: ' + data);
-//             });
-//     };
-
-//     $scope.startEditing = function (todo) {
-//         todo.editing = true;
-//     }
-
-//     $scope.saveEdits = function (todo, blur) {
-//         $http.post('api/saveEditedTodo/', todo)
-//             .success(function(data){
-//             })
-//             .error(function(data) {
-//                 console.log('Error: ' + data);
-//             });
-//         todo.editing = false;
-//     }
-
-//     $scope.removeTodo = function (todo){
-//         $http.post('api/removeTodo/', {todo: todo, status: tabs[$scope.selectedIndex].title})
-//             .success(function(data){
-//                 $scope.todos = data;
-//                 if(!todo.completed){
-//                     $scope.activeCount -=1;
-//                 }
-//             })
-//             .error(function(data) {
-//                 console.log('Error: ' + data);
-//             });
-//     }
-
-// })
-// .directive('todoFocus', function todoFocus($timeout) {
-//     'use strict';
-//     return function (scope, elem, attrs) {
-//         scope.$watch(attrs.todoFocus, function (newVal) {
-//             if (newVal) {
-//                 $timeout(function () {
-//                     elem[0].focus();
-//                 }, 0, false);
-//             }
-//         });
-//     };
-// })
 .config(function($mdThemingProvider) {
   $mdThemingProvider.theme('default');
 });

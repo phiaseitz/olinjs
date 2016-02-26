@@ -44,6 +44,8 @@ app.post('/api/create/topic', index.createTopic);
 
 app.get('/api/topic', index.getTopic)
 
+app.post('/api/update/topic', index.updateTopic)
+
 // // toggle complete status of todo
 // app.post('/api/toggleTodoCompleted', index.toggleTodoCompleted);
 

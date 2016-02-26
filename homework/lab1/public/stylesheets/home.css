@@ -1,3 +1,20 @@
+h2 {
+	font-size: 20px;
+	margin: 3px;
+}
+
+.create-new-todo {
+	color: blue;
+}
+
+md-list-item {
+	margin: 0px;
+}
+
+.md-list-item-text {
+	margin: 10px;
+}
+
 /*html                    { overflow-y:scroll; }
 
 body                    { padding:50px; }
