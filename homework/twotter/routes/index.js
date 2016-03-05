@@ -20,32 +20,42 @@ routes.home = function (req, res, next) {
 				.populate('user')
 				.exec(function(err, twotes){
 					console.log(twotes)
-					var cleanedTwotes	= twotes.map(function(twote){
-						//Clearly, recleaning the user json every time isn't the best way to go about this. Fix this if I have time. 
-						var cleanedTwote = {
-							_id: twote._id,
-							text: twote.text,
-							user: twote.user.convertToDispJson()
-						};
-						// twote.user = twote.user;
-						return cleanedTwote;
-					});
+					// Your code fails here as there are no initial twotes present to be mapped. By adding the this if statement
+					// I am able to circumvent it and access "/login" however I can't login 
+					if (twotes){
+						console.log("HERE", twotes)
+						var cleanedTwotes	= twotes.map(function(twote){
+							//Clearly, recleaning the user json every time isn't the best way to go about this. Fix this if I have time. 
+							var cleanedTwote = {
+								_id: twote._id,
+								text: twote.text,
+								user: twote.user.convertToDispJson()
+							};
+							// twote.user = twote.user;
+							return cleanedTwote;
+						});
+					}
 
 					if (req.session.passport && req.session.passport.user){
 
 						passport.deserializeUser(req.session.passport.user, function(err, user){
-							var flaggedTwotes = cleanedTwotes.map(function(twote){
-								if (String(user._id) === String(twote.user._id)){
-									twote.isCurrentUser = 1;
-								} 	
-								return twote
-							})
+							// cleanedTwotes seems to be undefined, therefore, I will comment out the following piece
+							// of code since the app won't run on my machine. In doing so things work :)
+							console.log("cleaned", cleanedTwotes)
+
+							// var flaggedTwotes = cleanedTwotes.map(function(twote){
+							// 	if (String(user._id) === String(twote.user._id)){
+							// 		twote.isCurrentUser = 1;
+							// 	} 	
+							// 	return twote
+							// })
 
 							var cleanedUser = user.convertToDispJson();
 
+							// passigin in twotes instead of cleanedTwotes to render the index hbs layout
 							res.render('index', {
 								user: cleanedUser,
-								twotes: flaggedTwotes,
+								twotes: twotes,
 								users: cleanedUsers,
 							});
 
