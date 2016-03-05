@@ -51,6 +51,7 @@ app.use(passport.session());
 app.use(flash());
 
 
+// On refresh it seems like the twotes are "lost" and not populating the page
 app.get('/', index.home);
 app.get('/home', index.home);
 app.get('/login', index.login);
