@@ -5,6 +5,7 @@ var expect = require('chai').expect;
 var Order = require('./../../../models/orderModel');
 
 describe('Order Model', function() {
+    //Make sure you only do this if you are hooked up the your dev database, it would be awkward to accidentially purge your mlabs db
 	/*
 		Removing all the old things from the database so we always
 		have only known ingredients in the database

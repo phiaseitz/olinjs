@@ -18,6 +18,7 @@ describe("The app", function() {
       .get('/ingredients')
       .expect(200)
       .expect('Content-Type', 'text/html; charset=utf-8')
+      //be careful when expecting lengths because those can be pretty variable on change
       .expect('Content-Length', '2534')
       .end(function(err, res) {
         // Supertest lets us end tests this way...
@@ -171,7 +172,4 @@ describe("The app", function() {
         }
       })
   });
-
-
-  
 });
